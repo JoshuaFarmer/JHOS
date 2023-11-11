@@ -43,10 +43,21 @@ def shell():
 
 
 def parser(i):
-	if line.split(" ")[0] == "//":
+	## added by joshua ##
+	if line.split(" ")[0].upper() == "USING":
+		importedFile = open(line.split(" ")[1], "r")
+		for importedLine in importedFile.read().split("\n"):
+			program.append(importedLine)
+		findFunctions()
+
+	elif line.split(" ")[0].upper() == "UNDEFINE":
+		variableValues.pop(variableNames.index(line.split(" ")[1]))
+		variableNames.pop(variableNames.index(line.split(" ")[1]))
+	####################################################
+	elif line.split(" ")[0] == "//":
 		return i
 	
-	if line.split(" ")[0].upper() == "DECLARE" or line.split(" ")[0].upper() == "DEFINE":
+	elif line.split(" ")[0].upper() == "DECLARE" or line.split(" ")[0].upper() == "DEFINE":
 		nam = line.split(" ")[1]
 		val = line.split('as"')[1].split('"')[0]
 		variableNames.append(nam)
