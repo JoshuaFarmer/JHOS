@@ -1,4 +1,3 @@
-# the version made in python,
 from random import *
 import sys
 import os
@@ -13,7 +12,7 @@ class returnLine:
 functionLocations = []
 functionNames = []
 
-variableNames = ["MATH.OUT","PI"]
+variableNames = ["OUT","PI"]
 variableValues = [0,3.14159265359]
 
 if len(sys.argv) > 2:
@@ -158,23 +157,37 @@ def parser(i):
 		elif a < b:
 			variableValues[0] = "GREATER"
 	elif line.split(" ")[0].upper() == "IS":
-		if line.split(" ")[1].isnumeric():
-			a = float(line.split(" ")[1])
-		else:
-			a = float(variableValues[variableNames.index(line.split(" ")[1])])
-		
-		if line.split(" ")[3].isnumeric():
-			b = float(line.split(" ")[3])
-		else:
-			b = float(variableValues[variableNames.index(line.split(" ")[3])])
+		if line.split(" ")[4] != "(STR)":
+			if line.split(" ")[1].isnumeric():
+				a = float(line.split(" ")[1])
+			else:
+				a = float(variableValues[variableNames.index(line.split(" ")[1])])
 			
-		if line.split(" ")[2].upper() == "EQUAL_TO":
-			variableValues[0] = a == b
-		if line.split(" ")[2].upper() == "LESS_THAN":
-			variableValues[0] = a < b
-		if line.split(" ")[2].upper() == "GREATER_THAN":
-			variableValues[0] = a > b
+			if line.split(" ")[3].isnumeric():
+				b = float(line.split(" ")[3])
+			else:
+				b = float(variableValues[variableNames.index(line.split(" ")[3])])
+				
+			if line.split(" ")[2].upper() == "EQUAL_TO":
+				variableValues[0] = a == b
+			if line.split(" ")[2].upper() == "LESS_THAN":
+				variableValues[0] = a < b
+			if line.split(" ")[2].upper() == "GREATER_THAN":
+				variableValues[0] = a > b
+		else:
+			a = variableValues[variableNames.index(line.split(" ")[1])]
+			b = variableValues[variableNames.index(line.split(" ")[3])]
+			if line.split(" ")[2].upper() == "EQUAL_TO":
+				variableValues[0] = a == b
 
+	elif line.split("OF")[0].split(" ")[0].upper() == "GET_ITEM":
+		value = int(line.split("OF")[0].split(" ")[1])
+		seperator = line.split("OF")[1].split(" SPLIT_BY:")[1]
+		variableValues[0] = variableValues[variableNames.index(line.split("OF")[1].split(" SPLIT_BY:")[0].split(" ")[1])].split(seperator)[value]
+	
+	elif line.split("AND")[0].split(" ")[0].upper() == "CONCAT":
+		variableValues[0] = variableValues[variableNames.index(line.split("AND")[0].split(" ")[1])] + variableValues[variableNames.index(line.split("AND")[1].split(" ")[1])]
+		
 	elif line.split(" ")[0].upper() == "RANDOM":
 		if line.split(" ")[1].isnumeric():
 			a = float(line.split(" ")[1])
