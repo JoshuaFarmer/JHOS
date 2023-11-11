@@ -1,5 +1,5 @@
 function main
 {
-  print "hello world!" (STR)
-  end program
+print "hello world!" (STR)
+end program
 }
