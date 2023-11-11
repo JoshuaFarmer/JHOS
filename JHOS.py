@@ -1,11 +1,23 @@
-# version 0.6 alpha
+# version 0.7 Alpha
+
 from random import *
 import sys
 import os
 
-file = open(sys.argv[1], "r")
+program = []
 
-program = file.read().split("\n")
+def shell():
+	inp = ""
+	while inp.upper() != "RUN":
+		inp = input()
+		program.append(inp)
+
+if len(sys.argv) > 1:
+	file = open(sys.argv[1], "r")
+
+	program = file.read().split("\n")
+else:
+	shell()
 
 class returnLine:
 	global value; value = 0
@@ -31,16 +43,14 @@ def findFunctions():
 			functionNames.append(program[j].split(" ")[1].upper())
 			functionLocations.append(j + 2)
 		j += 1
-	return functionLocations[functionNames.index("MAIN")];
+	return functionLocations[functionNames.index("MAIN")]
 
 
 i = findFunctions()
-
-def shell():
-	inp = ""
-	while inp != "RUN":
-		inp = input()
-		program.append(inp)
+def getJHOSVar(nam):
+	return variableValues[variableNames.index(nam)]
+def setJHOSVar(nam, value):
+	variableValues[variableNames.index(nam)] = value
 
 
 def parser(i):
@@ -54,6 +64,54 @@ def parser(i):
 	elif line.split(" ")[0].upper() == "UNDEFINE":
 		variableValues.pop(variableNames.index(line.split(" ")[1]))
 		variableNames.pop(variableNames.index(line.split(" ")[1]))
+	
+	elif line.split("(")[0].upper() == "IF":
+		if line.split("(")[1].split(" ")[0].isnumeric():
+			a = line.split("(")[1].split(" ")[0]
+		else:
+			a = variableValues[variableNames.index(line.split("(")[1].split(" ")[0])]
+			
+		if line.split(")")[0].split(" ")[2].isnumeric():
+			b = line.split(")")[0].split(" ")[2]
+
+		elif line.split(" ")[3] == "(STR)":
+			b = line.split(")")[0].split(" ")[2]
+		else:
+			b = variableValues[variableNames.index(line.split(")")[0].split(" ")[2])]
+				
+		if line.split(" ")[1].upper() == "EQUAL_TO":
+			if a == b:
+				return i + 1
+			else:
+				while program[i] != "}":
+					i += 1
+				return i - 1
+		elif line.split(" ")[1].upper() == "NOT_EQUAL_TO":
+			if a != b:
+				return i + 1
+			else:
+				while program[i] != "}":
+					i += 1
+				return i - 2
+			
+		elif line.split(" ")[1].upper() == "LESS_THAN":
+			if float(a) < float(b):
+				return i + 1
+			else:
+				while program[i] != "}":
+					i += 1
+				return i - 2
+			
+		elif line.split(" ")[1].upper() == "GREATER_THAN":
+			if float(a) > float(b):
+				return i + 1
+			else:
+				while program[i] != "}":
+					i += 1
+				return i - 2
+	
+	elif line.split(" ")[0].upper() == "SKIP":
+		return i + 1
 	####################################################
 	elif line.split(" ")[0] == "//":
 		return i
@@ -240,23 +298,24 @@ def parser(i):
 			if not variableValues[0]:
 				returnLine.value = i
 				i = functionLocations[functionNames.index(line.split(":")[2].upper())] - 1
-	
-	elif line.split(":")[0].upper() == "PYTHON":
-		eval(line.split(":")[1])
-	elif line == "}":
-		pass
+
+	elif line.split("@")[0].upper() == "PYTHON":
+		i += 1
+		while program[i] != "@":
+			exec(program[i])
+			i += 1
+		return i
 	elif line.upper() == "RETURN":
 		i = returnLine.value
 	elif line == "":
 		pass
 	else:
-
 		print("SYNTAX ERROR: "+line)
 	return i
 
-while line != "}" or line.upper() == "end program":
+while line != "}" or line.upper() == "END PROGRAM":
 	line = program[i].strip("\t")
-	if line != "}" or line.upper() == "end program":
+	if line != "}" or line.upper() == "END PROGRAM":
 		i = parser(i)
 		i += 1
 	else:
