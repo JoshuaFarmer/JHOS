@@ -1,3 +1,4 @@
+# version 0.6 alpha
 from random import *
 import sys
 import os
