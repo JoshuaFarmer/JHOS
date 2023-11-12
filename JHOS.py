@@ -14,15 +14,29 @@ def shell():
 			inp = inp.strip("\t")
 		if ";" in inp:
 			inp = inp.split(";")
-		program.append(inp)
+			for i in inp:
+				program.append(i)
+			inp = ""
+		else:
+			program.append(inp)
 
 if len(sys.argv) > 1:
 	file = open(sys.argv[1], "r")
-	program = file.read().split("\n")
-	index = 0
-	while index != len(program):
-		program[index] = program[index].strip("\t")
-		index += 1
+	program_ = file.read().split("\n")
+	#index = 0
+	#while index != len(program):
+	#	program[index] = program[index].strip("\t")
+	#	index += 1
+	for line in program_:
+		if "\t" in line:
+			line = line.strip("\t")
+		if ";" in line:
+			line = line.split(";")
+			for line_ in line:
+				program.append(line_)
+			line = ""
+		else:
+			program.append(line)
 else:
 	shell()
 
