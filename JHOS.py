@@ -1,4 +1,4 @@
-# version 0.7 Alpha
+# version 0.71 Alpha
 
 from random import *
 import sys
@@ -10,12 +10,19 @@ def shell():
 	inp = ""
 	while inp.upper() != "RUN":
 		inp = input()
+		if "\t" in inp:
+			inp = inp.strip("\t")
+		if ";" in inp:
+			inp = inp.split(";")
 		program.append(inp)
 
 if len(sys.argv) > 1:
 	file = open(sys.argv[1], "r")
-
 	program = file.read().split("\n")
+	index = 0
+	while index != len(program):
+		program[index] = program[index].strip("\t")
+		index += 1
 else:
 	shell()
 
@@ -54,7 +61,7 @@ def setJHOSVar(nam, value):
 
 
 def parser(i):
-	## added by joshua ##
+	## added by joshua, 11/11/2023 ##
 	if line.split(" ")[0].upper() == "USING":
 		importedFile = open(line.split(" ")[1], "r")
 		for importedLine in importedFile.read().split("\n"):
@@ -85,14 +92,14 @@ def parser(i):
 			else:
 				while program[i] != "}":
 					i += 1
-				return i - 1
+				return i
 		elif line.split(" ")[1].upper() == "NOT_EQUAL_TO":
 			if a != b:
 				return i + 1
 			else:
 				while program[i] != "}":
 					i += 1
-				return i - 2
+				return i
 			
 		elif line.split(" ")[1].upper() == "LESS_THAN":
 			if float(a) < float(b):
@@ -100,7 +107,7 @@ def parser(i):
 			else:
 				while program[i] != "}":
 					i += 1
-				return i - 2
+				return i
 			
 		elif line.split(" ")[1].upper() == "GREATER_THAN":
 			if float(a) > float(b):
@@ -108,10 +115,20 @@ def parser(i):
 			else:
 				while program[i] != "}":
 					i += 1
-				return i - 2
+				return i
 	
 	elif line.split(" ")[0].upper() == "SKIP":
 		return i + 1
+	
+	elif line.split(" ")[0].upper() == "LOOP":
+		times = 1
+		while program[i] != "{" and times != 0:
+			if program[i] == "}":
+				times += 1
+			elif program[i] == "{":
+				times -= 1
+			i -= 1
+		return i
 	####################################################
 	elif line.split(" ")[0] == "//":
 		return i
@@ -314,7 +331,7 @@ def parser(i):
 	return i
 
 while line != "}" or line.upper() == "END PROGRAM":
-	line = program[i].strip("\t")
+	line = program[i]
 	if line != "}" or line.upper() == "END PROGRAM":
 		i = parser(i)
 		i += 1
