@@ -1,0 +1,1 @@
+pyinstaller --onefile --distpath=".\BIN" -i".\Logo.ico" --workpath=".\BIN" .\SRC\JHOS.py 

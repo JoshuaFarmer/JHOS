@@ -1,0 +1,61 @@
+MATH.OUT
+PI
+ARG
+FUNCTION
+MAIN
+//
+DECLARE/DEFINE
+REDEFINE
+AS""
+(NULL)
+(NUM)
+(STR)
+(VAR)
+SYS
+ADD
+SUBTRACT
+MULTIPLY
+DIVIDE
+MODULO
+INT
+COMPARE
+EQUAL
+LESS
+GREATER
+IS
+EQUAL_TO
+GREATER_THAN
+LESS_THAN
+INPUT
+PRINT
+END PROGRAM
+FUNCTION CALL
+FUNCTION CALL IF
+TRUE/T
+FALSE/F/*
+PYTHON
+RETURN
+:
+{
+}
+(
+)
+.
+GET_ITEM
+OF
+SPLIT_BY:
+CONCAT
+AND
+IF
+EQUAL_TO
+FILE
+// read from file
+->
+// write to file
+<-
+// append to file
+<+
+// write to file (the name is stored in a variable)
+<v-
+// read from file (the name is stored in a variable)
+-v>
