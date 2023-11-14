@@ -1,10 +1,11 @@
-# version 0.71 Alpha
+# version 0.73 Alpha
 
 from random import *
 import sys
 import os
 
 program = []
+__version__ = "JHOS 0.73 Alpha"
 
 def shell():
 	inp = ""
@@ -46,8 +47,8 @@ class returnLine:
 functionLocations = []
 functionNames = []
 
-variableNames = ["OUT","PI"]
-variableValues = [0,3.14159265359]
+variableNames = ["OUT","PI","version"]
+variableValues = [0,3.14159265359,__version__]
 
 if len(sys.argv) > 2:
 	variableNames.append("ARG")
@@ -75,8 +76,34 @@ def setJHOSVar(nam, value):
 
 
 def parser(i):
+	## added by joshua, 14/11/2023 ##
+	if line.split(" ")[0].upper() == "FILE":
+		if line.split(" ")[2] == "->":
+			file = open(line.split("->")[0].split(" ")[1], "r")
+			variableValues[variableNames.index(line.split("->")[1].split(" ")[1])] = file.read()
+			file.close()
+
+		elif line.split(" ")[2] == "<-":
+			file = open(line.split("<-")[0].split(" ")[1], "w")
+			file.write(variableValues[variableNames.index(line.split("<-")[1].split(" ")[1])])
+			file.close()
+
+		elif line.split(" ")[2] == "<+":
+			file = open(line.split("<+")[0].split(" ")[1], "a")
+			file.write(variableValues[variableNames.index(line.split("<+")[1].split(" ")[1])])
+			file.close()
+
+		elif line.split(" ")[2] == "<v-":
+			file = open(variableValues[variableNames.index(line.split("<v-")[0].split(" ")[1])], "w")
+			file.write(variableValues[variableNames.index(line.split("<v-")[1].split(" ")[1])])
+			file.close()
+
+		elif line.split(" ")[2] == "-v>":
+			file = open(variableValues[variableNames.index(line.split("-v>")[0].split(" ")[1])], "r")
+			variableValues[variableNames.index(line.split("-v>")[1].split(" ")[1])] = file.read()
+			file.close()
 	## added by joshua, 11/11/2023 ##
-	if line.split(" ")[0].upper() == "USING":
+	elif line.split(" ")[0].upper() == "USING":
 		importedFile = open(line.split(" ")[1], "r")
 		for importedLine in importedFile.read().split("\n"):
 			program.append(importedLine)
