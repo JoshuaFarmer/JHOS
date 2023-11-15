@@ -1,0 +1,8 @@
+FUNCTION MAIN
+{
+	define a as"3"(NUM)
+	define b as"4"(NUM)
+	define c as"0"(NUM)
+	is a LESS_THAN b OUTPUT_TO:c
+	print c
+}
