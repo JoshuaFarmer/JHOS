@@ -1,0 +1,25 @@
+function MATH.INIT
+{
+	define TMP as"1"(NUM)
+	define A as"0"(NUM)
+	define B as"0"(NUM)
+	define I as"0"(NUM)
+	return
+}
+
+function POW
+{
+	if(I less_than B) (VAR)
+	{
+		add I 1 OUTPUT_TO:I
+		multiply A TMP OUTPUT_TO:TMP
+		
+		if(I less_than B) (VAR)
+		{
+			fc:pow
+			return
+		}
+		skip
+	}
+	return
+}
