@@ -59,3 +59,6 @@ FUNCTION_CALL_IF:TRUE,T/FALSE,F:[name of function]<br>
 FCIF:TRUE,T/FALSE,F:[name of function]<br>
 PYTHON@[python code]@<br>
 RETURN<br>
+
+equal_to, less_than, greater_than and not_equal_to can be replaced by:
+=, <, >, !=
